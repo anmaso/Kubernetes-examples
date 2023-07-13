@@ -1,3 +1,18 @@
+Kubernetes example with two applications
+- A redis database
+- An application that exposes redis through http
+
+```mermaid
+graph LR
+browser-->k
+k(kubectl\nproxy) -->|port-forward|ws(webdix\nservice)
+ws-->w(webdix\npod)
+ws-->w2(webdix\npod2)
+w-->rs(redis\nservice)
+w2-->rs(redis\nservice)
+rs-->r(redis\npod)
+```
+
 Deploy all files to Kubernetes
 
 ```
