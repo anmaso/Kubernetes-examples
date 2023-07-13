@@ -26,10 +26,10 @@ kubectl exec  webdix-684c6fd4d-2fg7x -- wget -O - -q localhost:7379/GET/name
 {"GET":"john"}
 ```
 
-You can also expose the pod to the local environment
+You can also expose the service to the local environment
 
 ```
-kubectl port-forward webdix-684c6fd4d-2fg7x 7379:7379
+kubectl port-forward service/webdix 7379:7379
 ```
 
 And access from the browser at http://localhost:7379/GET/name
