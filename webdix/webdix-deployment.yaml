@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webdix
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webdix
+  template:
+    metadata:
+      labels:
+        app: webdix
+    spec:
+      containers:
+      - name: webdix
+        image: docker.io/anapsix/webdis
+        env: 
+        - name: REDIS_HOST
+          value: redis
+          
