@@ -1,6 +1,8 @@
 Kubernetes example with two applications
 - A redis database
+  - Deployed without permanent persistance
 - An application that exposes redis through http
+  - Simulates a real application, you can perform get/set operations to backend redis
 
 ```mermaid
 graph LR
@@ -19,17 +21,35 @@ Deploy all files to Kubernetes
 kubectl apply -f .
 ```
 
-Run a redis SET and GET commands inside the webdix container
-
-First get the pod for webdix
+And check the status of the deployments and pods
 
 ```
+kubectl get deployments
+NAME     READY   UP-TO-DATE   AVAILABLE   AGE
+redis    1/1     1            1           13m
+webdix   2/2     2            2           13m
+
 kubectl get pods
 
-NAME                       READY   STATUS    RESTARTS   AGE
-redis-855d674ddf-86bv4     1/1     Running   0          2m13s
-webdix-684c6fd4d-2fg7x     1/1     Running   0          2m12s
+NAME                      READY   STATUS    RESTARTS   AGE
+redis-f6b66f4f7-t4lhp     1/1     Running   0          14m
+webdix-64f94c6758-5nrcs   1/1     Running   0          14m
+webdix-64f94c6758-mkgqf   1/1     Running   0          14m
 ```
+
+Check that redis is working properly by opening a shell and using redis-cli
+
+```
+kubectl exec -ti redis-f6b66f4f7-t4lhp -- sh
+# redis-cli
+127.0.0.1:6379> set hello world
+OK
+127.0.0.1:6379> get hello
+"world"
+```
+
+Now access the application, using executing a command inside one of the running containers.
+(Since webdix container lacks `cURL` we will use `wget -O - ` for the requests)
 
 And now execute wget inside the container
 
